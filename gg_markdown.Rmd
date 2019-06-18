@@ -1,0 +1,10 @@
+---
+title: "ggplot2"
+author: "James Allan"
+date: "19 June 2019"
+output: html_document
+---
+
+## Learning ggplot2
+
+Lets make sweet graphics
