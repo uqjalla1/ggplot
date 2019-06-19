@@ -5,6 +5,123 @@ date: "19 June 2019"
 output: html_document
 ---
 
-## Learning ggplot2
+## Learning ggplot
 
-Lets make sweet graphics
+Load tidyverse package
+
+```{r tidyverse}
+
+library(tidyverse)
+
+```
+Load data then explore (in the console)
+Use summary(), dim(), table()
+
+```{r data}
+
+ohi_data <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/OHI_global_data.csv")
+
+```
+
+Lets start!
+```{r start ggplot}
+
+ggplot(data=ohi_data, aes(x=georegion_one, y=OHI_score)) + # just set up the space
+      geom_point() # now tell it the sort of figure to plot
+
+ggplot(data=ohi_data, aes(x=georegion_one, y=OHI_score)) + # just set up the space
+      geom_jitter(width=0.2)
+```
+
+barplots
+```{r barplot}
+
+ggplot(data=ohi_data, aes(x=georegion_one))+
+      geom_bar()
+```
+
+histograms
+```{r histogram}
+
+ggplot(data=ohi_data, aes(x=HDI))+
+      geom_histogram()
+```
+
+Multiple geoms exploration
+```{r multiple geoms}
+
+ohi_summary <- read.csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/OHI_scores_georegion_summary.csv")
+
+ggplot(data = ohi_summary, aes(x = georegions, y = OHI_score_average))+
+      geom_bar(stat = "identity") +
+      geom_jitter(data = ohi_data, aes(x = georegion_one, y = OHI_score))
+
+
+```
+
+Aesthetics
+
+You can put aesthetics in global layer or in the geom plot itslef
+```{r aesthetics}
+
+ggplot(data=ohi_data, aes(y=OHI_score, x=HDI, colour = georegion_one))+
+  geom_point() #can put aesthetics in global layer
+  
+ggplot(data=ohi_data)+ #or can put aesthetics in the geom plot itslef
+  geom_point(aes(y=OHI_score, x=HDI, colour=georegion_one))#this is most useful for when adding many layers and want different graphics on each
+#anything in aes has to link to a column in your data
+```
+
+Adding a third variable with aes
+```{r third variable}
+
+ggplot(data=ohi_data, aes(x=OHI_score, y=HDI, colour=coastal_pop))+
+  geom_point()
+```
+
+Adding a third discrete variable with aes
+```{r third variable}
+
+ggplot(data=ohi_data, aes(x=OHI_score, y=HDI, colour=georegion_one))+
+  geom_point() #add 3rd variable using colour
+
+ggplot(data=ohi_data, aes(x=OHI_score, y=HDI, shape=georegion_one))+
+  geom_point() #add 3rd variable using shapes
+
+```
+
+Themes
+```{r themes}
+
+ggplot(data=ohi_data, aes(x=OHI_score, y=HDI))+
+  geom_point()+
+  theme_bw()
+```
+
+Labels and titles
+```{r}
+
+ggplot(data = ohi_data, aes(y = OHI_score, x = HDI, color=georegion_one)) + 
+  geom_point() + 
+    labs(y = "OHI score, 2017",
+       x = "Human Development Index",
+       title = "Countries with high human development have more sustainable oceans",
+      color = "Georegion") +  # if color doesn't work, use "fill"
+     theme_bw()
+
+```
+
+```{r}
+
+library("RColorBrewer")
+library("colorspace")
+
+display.brewer.all()
+
+my_palette <- brewer.pal(n=9, "YlOrRd")
+
+ggplot(data = ohi_data, aes(x = OHI_score, y = OHI_trend, color = HDI)) + 
+  geom_point(size =3) +
+  scale_colour_gradientn(colors = my_palette)
+
+```
