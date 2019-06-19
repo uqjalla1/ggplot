@@ -120,8 +120,23 @@ display.brewer.all()
 
 my_palette <- brewer.pal(n=9, "YlOrRd")
 
+# continuous
 ggplot(data = ohi_data, aes(x = OHI_score, y = OHI_trend, color = HDI)) + 
   geom_point(size =3) +
-  scale_colour_gradientn(colors = my_palette)
+  scale_colour_gradientn(colors = my_palette) +
+  theme_bw()
+
+ggplot(data = ohi_data, aes(x = OHI_score, y = OHI_trend, color = HDI)) + 
+  geom_point(size =3) +
+  scale_colour_gradientn(colors = c("blue","red")) +
+  theme_bw()
+
+# discrete
+ggplot(data = ohi_data, aes(x = OHI_score, y = HDI, color = georegion_one)) + 
+  geom_point(size =3) +
+  scale_colour_manual(values = my_palette)
+ 
 
 ```
+
+```{r}
